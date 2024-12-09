@@ -12,6 +12,11 @@ class UsersController {
       return res.status(400).json({ error: 'Missing password' });
     }
 
+    // Check if the database is available
+    if (!dbClient.isAlive()) {
+      return res.status(500).json({ error: 'Database not connected' });
+    }
+
     const usersCollection = dbClient.db.collection('users');
 
     const existing = await usersCollection.findOne({ email });
